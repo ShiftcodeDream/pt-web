@@ -1,0 +1,128 @@
+:root {
+    --bgfrom  : #000428;
+    --bgmid   : #00295d;
+    --bgto    : #004e92;
+    --bg      : #0e2b51;
+    --bglight : #2a5998;
+    --inactif : #5d7685;
+    --prim   : #004e92;
+    --fg      : #d0efff;
+    --titre   : #4891fa;
+    --sec     : #eeb;
+    --warning : #e39e3f;
+    --danger  : #dd46ad;
+    --success : #2da823;
+}
+body{
+    background: var(--bgfrom);
+    background: linear-gradient(0deg, var(--bgfrom) 0%, var(--bgto) 100%);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    color: var(--fg);
+}
+.titleBar {
+    background-color: var(--bgfrom);
+}
+.container {
+    align-items: center;
+    justify-content: flex-start;
+}
+/* Barre donglets en haut de lécran */
+.tabBar {
+    background-color: var(--bgmid);
+}
+/* Affichage du jour */
+.day{
+    color: var(--sec);
+    font-weight: bold;
+    font-size: 24px;
+    padding-top: 5px;
+}
+/* Affichage d'un horaire */
+.horaireView{
+}
+.horaire{
+    font-size: 24px;
+    text-align: center;
+    margin-top: 15px;
+    color: var(--fg);
+}
+.horaireActif{
+    border-bottom: 3px solid var(--danger);
+}
+.horaireNext{
+    border-bottom: 3px solid var(--success);
+}
+/* Ecran infos */
+.titre{
+       color: var(--titre);
+       font-size: 24px;
+       font-weight: bold;
+}
+.text{
+    color: var(--fg);
+    font-size: 16px;
+    padding: 10px;
+}
+.link{
+    font-size: 16px;
+    color: var(--titre);
+}
+/* Champs de saisie de texte */
+input{
+   background-color: #fff;
+   color: #000;
+   font-size: 16px;
+   font-weight: bold;
+   border: 1px solid var(--sec);
+   border-radius: 5px;
+   margin: 6px;
+   text-align: center;
+}
+button{
+    border-radius: 5px;
+}
+.buttonText{
+    text-align: center;
+    color: var(--fg);
+    font-size: 16px;
+    padding: 5px;
+}
+.roundedButtonContainer{
+    width: 30px;
+    height: 30px;
+}
+.roundedButton{
+    border-width: 0;
+}
+.roundedButtonText{
+    font-weight: bold;
+    font-size: 24px;
+    color: var(--fg);
+    text-align: center;
+}
+.roundedContainer{
+    border: 2px solid var(--bglight);
+    background-color: var(--bg);
+    margin-top: 4px;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.withSeparator{
+    width: 100%;
+    border-bottom: 2px solid var(--bg);
+}
+/* Tableaux */
+.tableRow{
+   flex-direction: row;
+   align-items: center;
+   padding: 2px;
+}
+.fixedText{
+    color: var(--fg);
+    font-family: Courier, sans-serif;
+    font-size: 16px;
+    padding: 0 5px;
+}

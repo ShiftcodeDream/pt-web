@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Notifications du pont tournant</title>
+  <link rel="stylesheet" type="text/css" href="global.css" />
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="lib/tides.js"></script>
+  <script src="lib/storage.js"></script>
+  <script>
+    function init() {
+      const dispList = document.getElementById("horaires");
+      downloadTides()
+        .then(tides => storeTides(tides))
+        .then(getTides)
+        .then(man => man.map(k=>k.format("DD/MM/YYYY HH:mm")))
+        .then(manoeuvres => dispList.innerHTML = manoeuvres.join('<br>'));
+    }
+  </script>
+</head>
+<body onload="init()">
+  <div class="container">
+    <div id="horaires"></div>
+  </div>
+</body>
+</html>
