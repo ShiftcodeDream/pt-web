@@ -5,3 +5,14 @@
 /dataSources/
 /dataSources.local.xml
 .idea/
+/deployment.xml
+/encodings.xml
+/jsLibraryMappings.xml
+/misc.xml
+/modules.xml
+/php.xml
+/inspectionProfiles/profiles_settings.xml
+/inspectionProfiles/Project_Default.xml
+/PTWeb.iml
+/dictionaries/UTILISATEUR.xml
+/vcs.xml
