@@ -25,6 +25,7 @@ body{
 }
 h1, h2{
     padding-left: 1.3em;
+    color: var(--titre);
 }
 .titleBar {
     background-color: var(--bgfrom);
@@ -167,4 +168,7 @@ button{
 a, a:visited, a:hover{
     font-weight: bold;
     color: var(--bglight);
+}
+.separateur{
+    border-bottom: 2px solid var(--bgto);
 }

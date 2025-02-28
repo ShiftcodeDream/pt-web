@@ -16,17 +16,34 @@
   <script>
     dayjs.locale('fr');
     $(() => {
+      // downloadTides()
+      //   .then(storeTides)
+      //   .then(getTides)
+      //   .then(displayTides)
+      //   .then(html => $("#horaires").html(html));
+      // Tabs management
       $('.onglet').each((id,o) => {
         $(o).on('click touchend', onTabClick)
       });
+      // Display default div
       $("#cont-horaires").show();
-      downloadTides()
-        .then(storeTides)
-        .then(getTides)
-        .then(displayTides)
-        .then(html => $("#horaires").html(html));
+      // Save preferences on checkbox change
+      $("#preventMe")
+        .prop('checked', getConfigValue('preventMe') === 'true')
+        .change(ev => {
+          const v = $(ev.target).is(':checked');
+          setConfigValue('preventMe', v);
+          const params = $("#params");
+          v && params.show() || params.hide();
+        });
+      // Manages notification delay
+      $("#delai")
+        .val(clamp(parseInt(getConfigValue('delai')), 10,120))
+        .change(ev => setConfigValue('delai', clamp(ev.target.value, 10,120)));
     });
-
+    function clamp(valeur, mini, maxi){
+      return (isNaN(valeur) || valeur < mini || valeur > maxi) ? mini : valeur;
+    }
     function onTabClick(ev){
       const tab = $(ev.target);
       tab.siblings('.actif').each((id, o) => $(o).removeClass('actif'));
@@ -45,13 +62,26 @@
       <div class="onglet" data-tab="apropos">A propos</div>
       <div class="onglet" data-tab="prefs">Préférences</div>
     </div>
+
     <div class="contenu" id="cont-prefs">
       <h2>Configuration des notifications</h2>
+      <p>
+        <input type="checkbox" id="preventMe" onChange="preventMe"/>
+        <label for="preventMe">Me prévenir avant que le pont tourne</label>
+      </p>
+      <div id="params">
+        <p class="separateur">
+          <label for="delai">Délai de prévenance en minutes</label>
+          <input type="number" id="delai" min="0" max="120" step="10" />
+        </p>
+      </div>
     </div>
+
     <div class="contenu" id="cont-horaires">
       <h2>Horaires des manœuvres</h2>
       <div id="horaires"></div>
     </div>
+
     <div class="contenu" id="cont-apropos">
       <h2>Pont Tournant de Cherbourg</h2>
       <p>Le pont tournant de Cherbourg est susceptible de touner
