@@ -5,22 +5,72 @@
   <title>Notifications du pont tournant</title>
   <link rel="stylesheet" type="text/css" href="global.css" />
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+          integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="lib/tides.js"></script>
   <script src="lib/storage.js"></script>
   <script>
-    function init() {
-      const dispList = document.getElementById("horaires");
+    $(() => {
+      $('.onglet').each((id,o) => {
+        $(o).on('click touchend', onTabClick)
+      });
+      $("#cont-horaires").show();
       downloadTides()
         .then(tides => storeTides(tides))
         .then(getTides)
         .then(man => man.map(k=>k.format("DD/MM/YYYY HH:mm")))
-        .then(manoeuvres => dispList.innerHTML = manoeuvres.join('<br>'));
+        .then(manoeuvres => $("#horaires").html(manoeuvres.join('<br>')));
+    });
+
+    function onTabClick(ev){
+      const tab = $(ev.target);
+      console.log(tab.data().tab);
+      tab.siblings('.actif').each((id, o) => $(o).removeClass('actif'));
+      tab.addClass('actif');
+      $(".contenu").hide();
+      const id = tab.data().tab;
+      $("#cont-" + id).show();
     }
+
   </script>
 </head>
-<body onload="init()">
+<body>
   <div class="container">
-    <div id="horaires"></div>
+    <h1>Pont tournant de Cherbourg</h1>
+    <div class="onglets">
+      <div class="onglet actif" data-tab="horaires">Horaires</div>
+      <div class="onglet" data-tab="apropos">A propos</div>
+      <div class="onglet" data-tab="prefs">Préférences</div>
+    </div>
+    <div class="contenu" id="cont-prefs">
+      <h2>Configuration des notifications</h2>
+    </div>
+    <div class="contenu" id="cont-horaires">
+      <h2>Horaires des manœuvres</h2>
+      <div id="horaires"></div>
+    </div>
+    <div class="contenu" id="cont-apropos">
+      <h2>Pont Tournant de Cherbourg</h2>
+      <p>Le pont tournant de Cherbourg est susceptible de touner
+        <b>une heure avant</b> et <b>une heure après</b> la pleine mer.
+        Le pont ne tournera que si un bâteau se présente pour entrer ou sortir du bassin du commerce.
+      </p>
+      <p>Pendant toute la durée de la manœuvre, la traversée du pont par les véhicules terrestres et les piétons est
+        rendue impossible. Cette manœuvre ne dure en général pas plus de dix minutes.
+      </p>
+      <h2>A propos de l'application</h2>
+      <p>Si vous avez l'habitude de traverser le pont tournant à certaines heures (pour aller ou revenir du travail par exemple),
+        renseignez ces horaires dans l'application. Vous recevrez une notification quelques minutes avant la manœuvre.
+        Ce délai est paramétrable à votre guise : vous pouvez définir combien de temps avant que la manœuvre n'ait lieu
+        vous souhaitez être prévenu.
+      </p>
+      <p>Les informations données ici le sont à titre informatif. L'auteur de l'application ne peut être responsable
+        de la qualité des prédictions, ni des conséquences de l'utilisation de cette application.
+      </p>
+      <p>Application développée par Matthias Delamare.</p>
+      <p>Website <a href="http://mdelamare.free.fr">http://mdelamare.free.fr</a></p>
+    </div>
   </div>
 </body>
 </html>

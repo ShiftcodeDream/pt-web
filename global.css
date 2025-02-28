@@ -20,6 +20,11 @@ body{
     background-position: center center;
     background-size: cover;
     color: var(--fg);
+    margin: 0;
+    min-height: 100vh;
+}
+h1, h2{
+    padding-left: 1.3em;
 }
 .titleBar {
     background-color: var(--bgfrom);
@@ -27,6 +32,8 @@ body{
 .container {
     align-items: center;
     justify-content: flex-start;
+    margin: auto;
+    max-width: 1024px;
 }
 /* Barre donglets en haut de lécran */
 .tabBar {
@@ -125,4 +132,32 @@ button{
     font-family: Courier, sans-serif;
     font-size: 16px;
     padding: 0 5px;
+}
+
+.onglets{
+    font-size: 18px;
+    font-weight: bold;
+}
+.onglet{
+    background-color: var(--bgmid);
+    color: var(--sec);
+    min-width: 200px;
+    max-width: 500px;
+    display: inline-block;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 5px 0;
+    margin: 0;
+    cursor:pointer;
+}
+.onglet.actif{
+    background-color: var(--bglight);
+    color: #FFF;
+}
+.contenu{
+    display:none;
+    border: 2px solid var(--bgmid);
+    padding: 5px;
+    margin-top: -2px;
 }
