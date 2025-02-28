@@ -33,7 +33,7 @@ h1, h2{
     align-items: center;
     justify-content: flex-start;
     margin: auto;
-    max-width: 1024px;
+    max-width: 800px;
 }
 /* Barre donglets en haut de lécran */
 .tabBar {
@@ -51,8 +51,8 @@ h1, h2{
 }
 .horaire{
     font-size: 24px;
-    text-align: center;
-    margin-top: 15px;
+    margin: 15px 0 0 2em;
+    display: inline-block;
     color: var(--fg);
 }
 .horaireActif{
@@ -160,4 +160,11 @@ button{
     border: 2px solid var(--bgmid);
     padding: 5px;
     margin-top: -2px;
+}
+#cont-apropos{
+    text-align: justify;
+}
+a, a:visited, a:hover{
+    font-weight: bold;
+    color: var(--bglight);
 }

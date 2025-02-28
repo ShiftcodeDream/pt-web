@@ -8,31 +8,33 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
           integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/locale/fr.js"
+          integrity="sha512-C3OpPRKs29BkGXyg8508ZAbqOZ5WwAmcPZYr16EDj8Pb74JUlbedGGN1nadGDRXlrGBTZMXne/WaBBGnW4x22A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="lib/tides.js"></script>
   <script src="lib/storage.js"></script>
   <script>
+    dayjs.locale('fr');
     $(() => {
       $('.onglet').each((id,o) => {
         $(o).on('click touchend', onTabClick)
       });
       $("#cont-horaires").show();
       downloadTides()
-        .then(tides => storeTides(tides))
+        .then(storeTides)
         .then(getTides)
-        .then(man => man.map(k=>k.format("DD/MM/YYYY HH:mm")))
-        .then(manoeuvres => $("#horaires").html(manoeuvres.join('<br>')));
+        .then(displayTides)
+        .then(html => $("#horaires").html(html));
     });
 
     function onTabClick(ev){
       const tab = $(ev.target);
-      console.log(tab.data().tab);
       tab.siblings('.actif').each((id, o) => $(o).removeClass('actif'));
       tab.addClass('actif');
       $(".contenu").hide();
       const id = tab.data().tab;
       $("#cont-" + id).show();
     }
-
   </script>
 </head>
 <body>
@@ -65,11 +67,12 @@
         Ce délai est paramétrable à votre guise : vous pouvez définir combien de temps avant que la manœuvre n'ait lieu
         vous souhaitez être prévenu.
       </p>
-      <p>Les informations données ici le sont à titre informatif. L'auteur de l'application ne peut être responsable
-        de la qualité des prédictions, ni des conséquences de l'utilisation de cette application.
+      <p>Les informations données ici le sont à titre purement informatif. L'auteur de l'application ne peut être
+         tenu pour responsable de la qualité des prédictions, ni des conséquences de l'utilisation de cette application.
       </p>
-      <p>Application développée par Matthias Delamare.</p>
-      <p>Website <a href="http://mdelamare.free.fr">http://mdelamare.free.fr</a></p>
+      <br/>
+      <p>Développé par Matthias Delamare</p>
+      <p><a href="http://mdelamare.free.fr">http://mdelamare.free.fr</a></p>
     </div>
   </div>
 </body>
