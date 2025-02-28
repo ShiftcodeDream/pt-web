@@ -25,7 +25,6 @@ body{
 }
 h1, h2{
     padding-left: 1.3em;
-    color: var(--titre);
 }
 .titleBar {
     background-color: var(--bgfrom);
@@ -171,4 +170,13 @@ a, a:visited, a:hover{
 }
 .separateur{
     border-bottom: 2px solid var(--bgto);
+}
+button{
+    background-color: var(--prim);
+    color: #FFF;
+    padding: 5px 10px;
+    border: none;
+}
+label{
+    font-size: 18px;
 }

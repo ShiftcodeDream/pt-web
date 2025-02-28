@@ -40,6 +40,7 @@
       $("#delai")
         .val(clamp(parseInt(getConfigValue('delai')), 10,120))
         .change(ev => setConfigValue('delai', clamp(ev.target.value, 10,120)));
+      $("#ajouterAlerte").on('click touchend', ajouterAlerte);
     });
     function clamp(valeur, mini, maxi){
       return (isNaN(valeur) || valeur < mini || valeur > maxi) ? mini : valeur;
@@ -51,6 +52,9 @@
       $(".contenu").hide();
       const id = tab.data().tab;
       $("#cont-" + id).show();
+    }
+    function ajouterAlerte(){
+      alert("todo");
     }
   </script>
 </head>
@@ -73,6 +77,9 @@
         <p class="separateur">
           <label for="delai">Délai de prévenance en minutes</label>
           <input type="number" id="delai" min="0" max="120" step="10" />
+        </p>
+        <p style="text-align: center">
+          <button id="ajouterAlerte">+ Ajouter</button>
         </p>
       </div>
     </div>
