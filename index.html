@@ -13,8 +13,10 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="lib/tides.js"></script>
   <script src="lib/storage.js"></script>
+  <script src="lib/alertComp.js"></script>
   <script>
     dayjs.locale('fr');
+    let alertes = [];
     $(() => {
       // downloadTides()
       //   .then(storeTides)
@@ -54,7 +56,9 @@
       $("#cont-" + id).show();
     }
     function ajouterAlerte(){
-      alert("todo");
+      let maxId = alertes.length > 0 ? Math.max(...alertes.map(a=>a.id)) : 0;
+      alertes.push(new AlertComp(maxId+1));
+      $("#listeAlertes").html(alertes.map(a=>a.render()));
     }
   </script>
 </head>
@@ -81,6 +85,7 @@
         <p style="text-align: center">
           <button id="ajouterAlerte">+ Ajouter</button>
         </p>
+        <div id="listeAlertes"></div>
       </div>
     </div>
 
