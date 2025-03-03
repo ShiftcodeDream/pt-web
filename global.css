@@ -190,6 +190,11 @@ label{
 }
 .timerange .head{
     background: linear-gradient(180deg, var(--bgmid) 0%, var(--bgto) 100%);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0;
 }
 .timerange div {
     padding-top: 10px;
@@ -227,4 +232,9 @@ label{
 input.description::placeholder {
     opacity: 0.5;
     color: var(--inactif);
+}
+.timerange .icon {
+    fill: var(--fg);
+    width: 20px;
+    margin: 5px;
 }

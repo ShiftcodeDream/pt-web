@@ -57,7 +57,7 @@
     }
     function ajouterAlerte(){
       let maxId = alertes.length > 0 ? Math.max(...alertes.map(a=>a.id)) : 0;
-      alertes.push(new AlertComp(maxId+1));
+      alertes[maxId+1] = new AlertComp(maxId+1);
       $("#listeAlertes").html(alertes.map(a=>a.render()));
     }
   </script>
