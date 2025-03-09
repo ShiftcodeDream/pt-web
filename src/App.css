@@ -136,6 +136,10 @@ button{
 
 .react-tabs{
     font-size: 18px;
+    margin: 0 15px;
+}
+.react-tabs__tab-list {
+    padding-left: 0;
 }
 .react-tabs__tab{
     background-color: var(--bgmid);
