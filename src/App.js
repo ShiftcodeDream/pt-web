@@ -3,8 +3,11 @@ import {Tab, TabList, TabPanel, Tabs} from 'react-tabs';
 import Horaires from './Horaires';
 import About from './About';
 import Preferences from './Preferences';
+import dayjs from 'dayjs';
 
 function App() {
+  dayjs.locale('fr');
+
   return (
     <Tabs>
       <TabList>
