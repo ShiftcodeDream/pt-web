@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {getConfigValue, setConfigValue} from './lib/storage';
+import {getConfigValue, setConfigValue} from '../lib/storage';
 
 export default function Preferences(){
   const NOTIF_ENABLED_KEY = 'NotifEnabled';

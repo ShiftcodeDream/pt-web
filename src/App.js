@@ -1,9 +1,9 @@
 import './App.css';
 import {Tab, TabList, TabPanel, Tabs} from 'react-tabs';
-import Horaires from './Horaires';
-import About from './About';
-import Preferences from './Preferences';
 import dayjs from 'dayjs';
+import Horaires from './components/Horaires';
+import About from './components/About';
+import Preferences from './components/Preferences';
 
 function App() {
   dayjs.locale('fr');
