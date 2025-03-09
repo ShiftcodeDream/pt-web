@@ -210,16 +210,19 @@ label{
     align-items: end;
 }
 .jours-semaine{
+    font-family: courier, monospace;
     color: var(--titre);
-    font-size: 18px;
+    font-size: 22px;
     cursor: pointer;
+}
+.jours-semaine div {
+    padding: 0 0.5em;
 }
 .jours-semaine .selected {
     border-bottom: 2px solid var(--danger);
     color: var(--fg);
     font-weight: bold;
     border-radius: 5px;
-    padding: 0 0.5em;
 }
 .w-100 {
     width: 100%;
@@ -230,8 +233,10 @@ label{
 .description{
     background-color: var(--bgmid);
     color: var(--fg);
-    padding: 2px 0;
+    padding: 2px 5px;
     font-weight: normal;
+    text-align: left;
+    width: calc(100% - 10px);
 }
 input.description::placeholder {
     opacity: 0.5;

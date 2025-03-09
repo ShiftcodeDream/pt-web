@@ -1,11 +1,15 @@
 import {useEffect, useState} from 'react';
 import {getConfigValue, setConfigValue} from '../lib/storage';
+import TimeRange from './TimeRange';
 
 export default function Preferences(){
   const NOTIF_ENABLED_KEY = 'NotifEnabled';
   const NOTIF_DELAY_KEY = 'DelaiNotif';
   const [notifEnabled, setNotifEnabled] = useState(true);
   const [notifDelay, setNotifDelay] = useState(10);
+  const [timeRanges, setTimeRanges] = useState([]);
+
+  // TODO : save timeranges in localStorage
 
   useEffect(() => {
     setNotifEnabled(getConfigValue(NOTIF_ENABLED_KEY) === 'true');
@@ -25,6 +29,22 @@ export default function Preferences(){
     setConfigValue(NOTIF_DELAY_KEY, notifDelay);
   }, [notifDelay]);
 
+  function addTimeRange() {
+    setTimeRanges(current => [...current, {}]);
+  }
+
+  function onChangeTimeRange(index, values) {
+    setTimeRanges(current => {
+      const n = [...current];
+      n[index] = values;
+      return n;
+    })
+  }
+
+  function onDeleteTimerange(index){
+    setTimeRanges(current => current.filter((k, i)=> i !== index));
+  }
+
   return (<>
     <h2>Configuration des notifications</h2>
     <p>
@@ -37,9 +57,16 @@ export default function Preferences(){
         <input type="number" value={notifDelay} onChange={e=>setNotifDelay(e.target.value)} min="0" max="120" step="10"/>
       </p>
       <p>
-        <button id="ajouterAlerte">+ Ajouter</button>
+        <button onClick={addTimeRange}>+ Ajouter</button>
       </p>
-      <div id="listeAlertes"></div>
+      <div id="listeAlertes">
+        {timeRanges && timeRanges.length>0 && timeRanges.map((t, ind) =>
+          <TimeRange value={t} key={'tr' + ind} cle={'tr' + ind}
+                     onChange={ vals => onChangeTimeRange(ind, vals)}
+                     onDelete={()=>onDeleteTimerange(ind)}
+          />
+        )}
+      </div>
     </div>
   </>);
 }
