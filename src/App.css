@@ -134,13 +134,12 @@ button{
     padding: 0 5px;
 }
 
-.onglets{
+.react-tabs{
     font-size: 18px;
-    font-weight: bold;
 }
-.onglet{
+.react-tabs__tab{
     background-color: var(--bgmid);
-    color: var(--sec);
+    color: #FFF;
     min-width: 200px;
     max-width: 500px;
     display: inline-block;
@@ -151,8 +150,9 @@ button{
     margin: 0;
     cursor:pointer;
 }
-.onglet.actif{
+.react-tabs__tab--selected{
     background-color: var(--bglight);
+    font-weight: bold;
     color: #FFF;
 }
 .contenu{
