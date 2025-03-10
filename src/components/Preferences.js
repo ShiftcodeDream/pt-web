@@ -5,16 +5,21 @@ import TimeRange from './TimeRange';
 export default function Preferences(){
   const NOTIF_ENABLED_KEY = 'NotifEnabled';
   const NOTIF_DELAY_KEY = 'DelaiNotif';
+  const TIMERANGES_KEY = 'TimeRanges';
   const [notifEnabled, setNotifEnabled] = useState(true);
   const [notifDelay, setNotifDelay] = useState(10);
-  const [timeRanges, setTimeRanges] = useState([]);
+  const [timeRanges, setTimeRanges] = useState();
 
   useEffect(() => {
     setNotifEnabled(getConfigValue(NOTIF_ENABLED_KEY) === 'true');
     const delai = getConfigValue(NOTIF_DELAY_KEY);
     if(delai !== null && !isNaN(parseInt(delai)))
       setNotifDelay(delai);
+    let ranges = getConfigValue(TIMERANGES_KEY);
+    if(ranges !== null)
+      setTimeRanges(JSON.parse(ranges));
   }, []);
+
   function toggleEnabled(){
     setNotifEnabled(n=>!n);
   }
@@ -22,10 +27,14 @@ export default function Preferences(){
   useEffect(() => {
     setConfigValue(NOTIF_ENABLED_KEY, notifEnabled ? 'true' : 'false');
   }, [notifEnabled]);
-
   useEffect(() => {
     setConfigValue(NOTIF_DELAY_KEY, notifDelay);
   }, [notifDelay]);
+  useEffect(() => {
+    if(timeRanges !== undefined) {
+      setConfigValue(TIMERANGES_KEY, JSON.stringify(timeRanges));
+    }
+  }, [timeRanges]);
 
   function addTimeRange() {
     setTimeRanges(current => [...current, {active: true}]);
