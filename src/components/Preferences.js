@@ -28,7 +28,7 @@ export default function Preferences(){
   }, [notifDelay]);
 
   function addTimeRange() {
-    setTimeRanges(current => [...current, {}]);
+    setTimeRanges(current => [...current, {active: true}]);
   }
 
   function onChangeTimeRange(index, values) {
@@ -50,10 +50,10 @@ export default function Preferences(){
       <label htmlFor="preventMe">Me prévenir</label>
       <input type="number" value={notifDelay} step="10"
              onChange={e => setNotifDelay(e.target.value)} min="0" max="120"/>
-      <label htmlFor="preventMe">minutes avant que le pont tourne</label>
+      <label htmlFor="preventMe">minutes avant que le pont tourne dans l'une des plages horaires suivantes :</label>
     </p>
     <div hidden={!notifEnabled}>
-      <p><button onClick={addTimeRange}>+ Ajouter</button></p>
+      <p style={{textAlign:'right'}}><button onClick={addTimeRange}>+ Ajouter une plage horaire</button></p>
       <div id="listeAlertes">
         {timeRanges && timeRanges.length>0 && timeRanges.map((t, ind) =>
           <TimeRange value={t} key={'tr' + ind} cle={'tr' + ind}
