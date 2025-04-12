@@ -238,3 +238,9 @@ input.description::placeholder {
     width: 20px;
     margin: 5px;
 }
+.OK{
+    color: var(--success);
+}
+.KO{
+    color: var(--danger);
+}
