@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import Horaires from './components/Horaires';
 import About from './components/About';
 import Preferences from './components/Preferences';
+require('dayjs/locale/fr');
 
 function App() {
   dayjs.locale('fr');

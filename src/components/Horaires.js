@@ -1,64 +1,49 @@
 import {useEffect, useState} from 'react';
-import getDatabase from '../schema';
-import {getConfigValue, getTides, setConfigValue, storeTides} from '../lib/storage';
-import {mockupTides} from '../lib/tides';
+import {getTides} from '../lib/storage';
+import {firstUpperCase} from '../lib/utils';
+import dayjs from 'dayjs';
+import DayTitle from './DayTitle';
+import DisplayHour from './DisplayHour';
 
 export default function Horaires(){
-  // TODO : Déplacer ailleurs une fois les tests terminés
-  const [resultat, setResultat] = useState([]);
+  const [tides, setTides] = useState([]);
+  const [liste, setListe] = useState([]);
 
-  async function runTests(){
-    let result = [], retour;
-    // Test 1 : accès à la base de données
-    let db = await (getDatabase().catch(e => console.error(e)));
-    assert(db, "get Database");
-    assert(db && db.objectStoreNames.contains('prefs'), "prefs store available");
+  useEffect(() => {
+    getTides().then(setTides);
+  }, []);
 
-    // Test 2 : enregistrement et restitution d'une valeur dans le gestionnaire de configuration
-    await setConfigValue('aaa', "trois").catch(e => console.error(e));
-    retour = await getConfigValue('aaa').catch(e => console.error(e));
-    assert(retour === "trois", "valeur de retour 1");
-
-    // Test 3 : essai d'enregistrement d'un objet dans le gestionnaire de configuration
-    await setConfigValue('bbb', JSON.stringify({un:1, deux: 'deux'})).catch(e => console.error(e));
-    retour = await getConfigValue('bbb').catch(e => console.error(e));
-    info("Retour=" + retour);
-    retour = JSON.parse(retour);
-    assert(retour.un === 1 && retour.deux === "deux", "valeur de retour 2");
-
-    // Test 4 : demande une valeur de paramètre qui n'existe pas
-    retour = await getConfigValue('nexistepas');
-    assert(retour === null, "Recherche de valeur inexistante");
-
-    // Test 5 : demande une valeur de paramètre qui n'existe pas, avec valeur par défaut
-    retour = await getConfigValue('nexistepas', 'valeurParDefaut');
-    assert(retour === 'valeurParDefaut', "Recherche de valeur inexistante avec valeur par défaut");
-
-    mockupTides()
-      .then(storeTides)
-      .then(() => getTides())
-      .then(t => console.log({tides:t, format:t.map(y => y.format("DD/MM/YYYY HH:mm")) }))
-    ;
-
-    setResultat(result);
-
-    function assert(condition, texte) {
-      result.push({statut : condition?"OK":"KO", nom:texte});
-    }
-    function info(texte){
-      result.push({statut:'INFO', nom:texte});
-    }
+  useEffect(makeList, [tides]);
+  
+  function makeList() {
+    let old = 0, next=false, nextDetected=false, actif=false;
+    const now = dayjs();
+    let result = [];
+    tides.forEach((v,i) => {
+      // Date change detection
+      if(old != v.get('date')) {
+        result.push(
+          <DayTitle day={v} key={'d' + i}/>
+        );
+      }
+      old = v.get('date');
+      // Next & active movements detection
+      next=false;
+      if(!nextDetected && v.isAfter(now)){
+        next = true;
+        nextDetected = true;
+      }
+      actif = (now.isAfter(v.add(-2, 'minute')) && now.isBefore(v.add(15,'minute')));
+      // Finally, display time
+      result.push(
+        <DisplayHour heure={v} key={'h'+i} actif={actif} next={next}/>
+      );
+    });
+    setListe(result);
   }
-
+  
   return (<>
     <h1>Horaires</h1>
-    <input type="button" onClick={runTests} value="tests" />
-    <pre>
-      {resultat.map((t,i) =>
-        <p style={{color: t.statut==='OK' ? '#2da823' : t.statut==='INFO' ? '#4891fa' : '#dd46ad'}} key={i}>
-          {t.statut} - {t.nom}
-        </p>
-      )}
-    </pre>
+    {liste!==null && liste.length && liste}
     </>)
 }
