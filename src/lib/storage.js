@@ -1,16 +1,29 @@
 import dayjs from 'dayjs';
 import getDatabase from '../schema';
-import {getValue, putValue} from './PromisedIndexedDb';
+import {clearObjectStore, getAll, getValue, putValue} from './PromisedIndexedDb';
 
-export function storeTides(tides){
-  localStorage.setItem('tides',
-    JSON.stringify(tides.map(t => t.format("YYYY-MM-DD HH:mm")))
-  );
+/**
+ * Enregistre les marées
+ * @param tides Tableau d'objets DayJs représentant les horaires des manoeuvres potentielles du pont
+ * @returns {Promise<Awaited<unknown>[]>}
+ */
+export function storeTides(tides) {
+  return getDatabase()
+    .then(db => clearObjectStore(db, 'tide'))
+    .then(db => Promise.all(tides.map(t =>
+      putValue(db, 'tide', { t: t.toISOString() })
+    )));
 }
 
+/**
+ * Retourne tous les horaires de manoeuvre potentiels enregistrés dans la database
+ * sous la forme d'un tableau d'objets Dayjs
+ * @returns {*}
+ */
 export function getTides(){
-  return JSON.parse(localStorage.getItem('tides'))
-    .map(d => dayjs(d, "YYYY-MM-DD HH:mm"));
+  return getDatabase()
+    .then(db => getAll(db, 'tide'))
+    .then(tides => tides.map(d => dayjs(d.t)));
 }
 
 /**
@@ -34,3 +47,4 @@ export const getConfigValue = (key, defaultValue=null) => {
     .then(db => getValue(db, 'prefs', key))
     .then(result => result ? result.value : defaultValue);
 }
+

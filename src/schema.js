@@ -6,6 +6,7 @@ export function updateDatabaseSchema(e){
   const db = e.target.result;
   let store = db.createObjectStore('prefs', { keyPath: "key"});
   store.createIndex("prefs_key", "key", {unique:true});
+  db.createObjectStore('tide', { keyPath: "id", autoIncrement : true});
 }
 
 export default function getDatabase(){

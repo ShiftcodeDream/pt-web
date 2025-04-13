@@ -94,3 +94,39 @@ export function getIndexedValue(Database, StoreName, IndexName, key){
     requete.onerror = fail;
   });
 }
+
+/**
+ * Retire tous les éléments d'un object store. Renvoie la database en cas de succès
+ * afin de pouvroi chaîner avec d'autrs actions
+ * @param Database
+ * @param StoreName
+ * @returns {Promise<unknown>}
+ */
+export function clearObjectStore(Database, StoreName){
+  return new Promise((success, fail) => {
+    let requete = Database
+      .transaction([StoreName], 'readwrite')
+      .objectStore(StoreName)
+      .clear();
+    requete.onsuccess = () => success(Database);
+    requete.onerror = fail;
+  });
+}
+
+/**
+ * Renvoie tous les objets enregistrés dans un datastore
+ * @param Database
+ * @param StoreName
+ * @returns {Promise<unknown>}
+ */
+export function getAll(Database, StoreName){
+  return new Promise((success, fail) => {
+    let requete = Database
+      .transaction([StoreName], 'readonly')
+      .objectStore(StoreName)
+      .getAll();
+    requete.onsuccess = (event) => success(event.target.result);
+    requete.onerror = fail;
+  });
+
+}

@@ -1,13 +1,11 @@
 import {useEffect, useState} from 'react';
 import getDatabase from '../schema';
-import {getConfigValue, setConfigValue} from '../lib/storage';
+import {getConfigValue, getTides, setConfigValue, storeTides} from '../lib/storage';
+import {mockupTides} from '../lib/tides';
 
 export default function Horaires(){
-  const [resultat, setResultat] = useState([]);
   // TODO : Déplacer ailleurs une fois les tests terminés
-  useEffect( () => {
-    runTests();
-  }, []);
+  const [resultat, setResultat] = useState([]);
 
   async function runTests(){
     let result = [], retour;
@@ -36,6 +34,12 @@ export default function Horaires(){
     retour = await getConfigValue('nexistepas', 'valeurParDefaut');
     assert(retour === 'valeurParDefaut', "Recherche de valeur inexistante avec valeur par défaut");
 
+    mockupTides()
+      .then(storeTides)
+      .then(() => getTides())
+      .then(t => console.log({tides:t, format:t.map(y => y.format("DD/MM/YYYY HH:mm")) }))
+    ;
+
     setResultat(result);
 
     function assert(condition, texte) {
@@ -48,6 +52,7 @@ export default function Horaires(){
 
   return (<>
     <h1>Horaires</h1>
+    <input type="button" onClick={runTests} value="tests" />
     <pre>
       {resultat.map((t,i) =>
         <p style={{color: t.statut==='OK' ? '#2da823' : t.statut==='INFO' ? '#4891fa' : '#dd46ad'}} key={i}>
