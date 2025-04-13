@@ -56,7 +56,25 @@ export function putValue(Database, StoreName, data){
 }
 
 /**
- * Récupère un objet par la clé définie par un index
+ * Récupère depuis un object store un objet défini par sa clé
+ *
+ * @param Database Base de données
+ * @param StoreName Nom du magasin d'objets (équivalent de la table)
+ * @param key clé de l'index
+ * @returns {Promise<unknown>}
+ */
+export function getValue(Database, StoreName, key){
+  return new Promise((success, fail) => {
+    let requete = Database
+      .transaction([StoreName], "readonly")
+      .objectStore(StoreName)
+      .get(key);
+    requete.onsuccess = (event) => success(event.target.result);
+    requete.onerror = fail;
+  });
+}
+/**
+ * Récupère depuis un index d'object store un objet par défini par sa clé
  *
  * @param Database Base de données
  * @param StoreName Nom du magasin d'objets (équivalent de la table)
@@ -64,7 +82,7 @@ export function putValue(Database, StoreName, data){
  * @param key clé de l'index
  * @returns {Promise<unknown>}
  */
-export function getValue(Database, StoreName, IndexName, key){
+export function getIndexedValue(Database, StoreName, IndexName, key){
   return new Promise((success, fail) => {
     let requete = Database
       .transaction([StoreName], "readonly")

@@ -31,6 +31,6 @@ export const setConfigValue = (key,value) => {
  */
 export const getConfigValue = (key, defaultValue=null) => {
   return getDatabase()
-    .then(db => getValue(db, 'prefs','prefs_key', key))
+    .then(db => getValue(db, 'prefs', key))
     .then(result => result ? result.value : defaultValue);
 }
