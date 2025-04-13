@@ -43,7 +43,7 @@ export default function Horaires(){
   }
   
   return (<>
-    <h1>Horaires</h1>
+    <h1>Horaires des manoeuvres</h1>
     {liste!==null && liste.length && liste}
     </>)
 }

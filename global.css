@@ -13,6 +13,9 @@
     --danger  : #dd46ad;
     --success : #2da823;
 }
+body, html{
+    margin: 0; padding:0;
+}
 body{
     background: var(--bgfrom);
     background: linear-gradient(180deg, var(--bgfrom) 0%, var(--bgto) 100%);
@@ -20,7 +23,6 @@ body{
     background-position: center center;
     background-size: cover;
     color: var(--fg);
-    margin: 0;
     min-height: 100vh;
 }
 h1, h2{
@@ -141,14 +143,14 @@ button{
 .onglet{
     background-color: var(--bgmid);
     color: var(--sec);
-    min-width: 200px;
+    min-width: 150px;
     max-width: 500px;
     display: inline-block;
     text-align: center;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     padding: 5px 0;
-    margin: 0;
+    margin: 0 10px 0 0;
     cursor:pointer;
 }
 .onglet.actif{

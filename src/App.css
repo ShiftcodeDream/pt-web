@@ -47,11 +47,9 @@ h1, h2{
     padding-top: 5px;
 }
 /* Affichage d'un horaire */
-.horaireView{
-}
 .horaire{
     font-size: 24px;
-    margin: 15px 0 0 2em;
+    margin: 5px 0 0 15px;
     display: inline-block;
     color: var(--fg);
 }
@@ -144,18 +142,19 @@ button{
 .react-tabs__tab{
     background-color: var(--bgmid);
     color: #FFF;
-    min-width: 200px;
+    min-width: 150px;
     max-width: 500px;
     display: inline-block;
     text-align: center;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    padding: 5px 0;
-    margin: 0;
+    padding: 3px 0;
+    margin: 0 5px 0 0;
     cursor:pointer;
 }
 .react-tabs__tab--selected{
-    background-color: var(--bglight);
+    /*background-color: var(--bglight);*/
+    background-image: linear-gradient(125deg, #2477e1, #06106e 100%);
     font-weight: bold;
     color: #FFF;
 }
