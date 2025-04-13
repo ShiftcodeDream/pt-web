@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import getDatabase from '../schema';
-import {getValue, putValue} from './NavigatorDatabase';
+import {getValue, putValue} from './PromisedIndexedDb';
 
 export function storeTides(tides){
   localStorage.setItem('tides',

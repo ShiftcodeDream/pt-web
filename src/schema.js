@@ -1,4 +1,4 @@
-import {openIndexedDatabase} from './lib/NavigatorDatabase';
+import {openIndexedDatabase} from './lib/PromisedIndexedDb';
 
 export const DATABASE_NAME="PontTournant";
 export const DATABASE_VERSION = 1;
