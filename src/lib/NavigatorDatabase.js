@@ -23,17 +23,18 @@ export function openIndexedDatabase(DatabaseName, DatabaseVersion, onUpgradeNeed
 /**
  * Insère l'objet data dans le magasin d'objet ObjectStore de la base Database
  * @param Database Connexion à la Database
- * @param ObjectStore String nom du objectstore
+ * @param StoreName String nom de l'objectstore
  * @param data object contenant les données
  * @returns {Promise<unknown>}
  */
-export function insertData(Database, ObjectStore, data){
-  return new Promise((success, reject) => {
-    let tx = Database.transaction([ObjectStore], 'readwrite');
-    let store = tx.objectStore(ObjectStore);
-    tx.oncomplete = success;
-    tx.onerror = reject;
-    store.add(data);
+export function insertData(Database, StoreName, data){
+  return new Promise((success, fail) => {
+    let requete = Database
+      .transaction([StoreName], 'readwrite')
+      .objectStore(StoreName)
+      .insert(data);
+    requete.onsuccess = (event) => success(event.target.result);
+    requete.onerror = fail;
   });
 }
 
