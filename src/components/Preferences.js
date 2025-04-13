@@ -1,46 +1,43 @@
 import {useEffect, useState} from 'react';
-import {getConfigValue, setConfigValue} from '../lib/storage';
+import {getConfigValue, getTimeranges, setConfigValue} from '../lib/storage';
 import TimeRange from './TimeRange';
 
 export default function Preferences(){
   const NOTIF_ENABLED_KEY = 'NotifEnabled';
   const NOTIF_DELAY_KEY = 'DelaiNotif';
-  const TIMERANGES_KEY = 'TimeRanges';
   const [notifEnabled, setNotifEnabled] = useState(true);
   const [notifDelay, setNotifDelay] = useState(10);
-  const [timeRanges, setTimeRanges] = useState();
+  const [timeRanges, setTimeRanges] = useState([]);
 
   useEffect(() => {
-    setNotifEnabled(getConfigValue(NOTIF_ENABLED_KEY) === 'true');
-    const delai = getConfigValue(NOTIF_DELAY_KEY);
-    if(delai !== null && !isNaN(parseInt(delai)))
-      setNotifDelay(delai);
-    let ranges = getConfigValue(TIMERANGES_KEY);
-    if(ranges !== null)
-      setTimeRanges(JSON.parse(ranges));
+    getConfigValue(NOTIF_ENABLED_KEY, true).then(r => setNotifEnabled(r=== 'true'));
+    getConfigValue(NOTIF_DELAY_KEY, 10).then(setNotifDelay);
+    getTimeranges().then(setTimeRanges);
   }, []);
 
   function toggleEnabled(){
-    setNotifEnabled(n=>!n);
+    setConfigValue(NOTIF_ENABLED_KEY, !notifEnabled ? 'true' : 'false');
+    setNotifEnabled(!notifEnabled);
   }
 
-  useEffect(() => {
-    setConfigValue(NOTIF_ENABLED_KEY, notifEnabled ? 'true' : 'false');
-  }, [notifEnabled]);
-  useEffect(() => {
-    setConfigValue(NOTIF_DELAY_KEY, notifDelay);
-  }, [notifDelay]);
-  useEffect(() => {
-    if(timeRanges !== undefined) {
-      setConfigValue(TIMERANGES_KEY, JSON.stringify(timeRanges));
+  function onChangeNotifDelay(event){
+    let newValue = parseInt(event.target.value);
+    setNotifDelay(newValue);
+    if(isNaN(newValue)){
+      newValue = 10;
+    } else {
+      if(newValue < 10)  newValue = 10;
+      if(newValue > 120) newValue = 120;
     }
-  }, [timeRanges]);
+    setConfigValue(NOTIF_DELAY_KEY, newValue);
+  }
 
   function addTimeRange() {
     setTimeRanges(current => [...current, {active: true}]);
   }
 
   function onChangeTimeRange(index, values) {
+    // TODO : modif en database
     setTimeRanges(current => {
       const n = [...current];
       n[index] = values;
@@ -49,6 +46,7 @@ export default function Preferences(){
   }
 
   function onDeleteTimerange(index){
+    // TODO : delete timeRange in database => tr[index].id (si non nul)
     setTimeRanges(current => current.filter((k, i)=> i !== index));
   }
 
@@ -57,8 +55,8 @@ export default function Preferences(){
     <p>
       <input type="checkbox" id="preventMe" checked={notifEnabled} onChange={toggleEnabled}/>
       <label htmlFor="preventMe">Me prévenir</label>
-      <input type="number" value={notifDelay} step="10"
-             onChange={e => setNotifDelay(e.target.value)} min="0" max="120"/>
+      <input type="number" value={notifDelay} onChange={onChangeNotifDelay}
+             min="0" max="120" step="10"/>
       <label htmlFor="preventMe">minutes avant que le pont tourne dans l'une des plages horaires suivantes :</label>
     </p>
     <div hidden={!notifEnabled}>

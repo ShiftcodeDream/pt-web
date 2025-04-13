@@ -45,6 +45,14 @@ export const setConfigValue = (key,value) => {
 export const getConfigValue = (key, defaultValue=null) => {
   return getDatabase()
     .then(db => getValue(db, 'prefs', key))
-    .then(result => result ? result.value : defaultValue);
+    .then(result => {console.log({key:key,result:result,default:defaultValue,isPresent:result!==undefined,returned:result!==undefined ? result.value : defaultValue}); return result!==undefined ? result.value : defaultValue});
 }
 
+export function getTimeranges(activeOnly = false){
+  if(activeOnly){
+    // TODO : sélection avec critères
+  }else {
+    return getDatabase()
+      .then(db => getAll(db, 'range'))
+  }
+}

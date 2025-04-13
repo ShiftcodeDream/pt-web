@@ -44,6 +44,6 @@ export default function Horaires(){
   
   return (<>
     <h1>Horaires des manoeuvres</h1>
-    {liste!==null && liste.length && liste}
+    {liste!==null && liste.length && liste || "Pas d'horaire connu pour le moment"}
     </>)
 }
