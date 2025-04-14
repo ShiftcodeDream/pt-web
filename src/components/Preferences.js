@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {deleteRange, getConfigValue, getTimeranges, putRange, setConfigValue} from '../lib/storage';
-import TimeRange from './TimeRange';
+import TimeRange, {getDefaultValues} from './TimeRange';
 
 export default function Preferences(){
   const NOTIF_ENABLED_KEY = 'NotifEnabled';
@@ -33,7 +33,7 @@ export default function Preferences(){
   }
 
   function addTimeRange() {
-    putRange({active:true})
+    putRange(getDefaultValues())
       .then(createdId =>
         setTimeRanges(current => [...current, {active: true, id:createdId}])
       );

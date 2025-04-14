@@ -29,11 +29,6 @@ export default function TimeRange({value, onChange, onDelete}){
     onChange(Object.assign({},{active, from, to, weekDays, description, id:value.id}, params));
   }
 
-  function getDefaultHours(){
-    let d = dayjs();
-    d = d.subtract(d.minute() % 5, 'minute');
-    return [d.format("HH:mm"), d.add(15,'minute').format("HH:mm")];
-  }
   return (
     <div className="timerange">
       <div className="head">
@@ -61,4 +56,27 @@ export default function TimeRange({value, onChange, onDelete}){
       </div>
     </div>
   )
+}
+
+function getDefaultHours(){
+  let d = dayjs();
+  d = d.subtract(d.minute() % 5, 'minute');
+  return [
+    d.format("HH:mm"),
+    d.add(15,'minute').format("HH:mm")
+  ];
+}
+
+export function getDefaultValues(){
+  const defaults = getDefaultHours();
+  const d = Array(7).fill(false);
+  d[(dayjs().day()+6) % 7] = true;
+
+  return {
+    active: true,
+    from: defaults[0],
+    to: defaults[1],
+    weekDays: d,
+    description: ''
+  }
 }
