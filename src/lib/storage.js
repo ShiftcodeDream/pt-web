@@ -49,12 +49,11 @@ export const getConfigValue = (key, defaultValue=null) => {
 }
 
 export function getTimeranges(activeOnly = false){
-  if(activeOnly){
-    // TODO : sélection avec critères
-  }else {
-    return getDatabase()
-      .then(db => getAll(db, 'range'))
-  }
+  const req = getDatabase()
+    .then(db => getAll(db, 'range'));
+  return activeOnly
+    ? req.then(r => r.filter(t => t.active===true))
+    : req;
 }
 
 /**
