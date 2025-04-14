@@ -3,9 +3,12 @@
 Le but de cette application est de créer une application web déployable en tant qu'application sur un smartphone
 (principe de PWA)
 
-Le stockage des préférences utilisateurs se fait dans le localStorage
+Le stockage des préférences utilisateurs et des horaires des manœuvres se fait dans le indexed database
+du navigateur, de façon à rester accessibles aux workers.
 
-La mise en cache des informations des marées est effectué à l'aide d'un service worker et du cache du service worker.
+Un service worker gère la mise en cache du code.
+Le TideWorker télécharge régulièrement les horaires des manœuvres
+Le NotificationWorker créée les notifications pour alerter l'utilisateur d'une manœuvre à venir.
 
 ## Développement
 ### Scripts
