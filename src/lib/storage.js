@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import getDatabase from '../schema';
-import {clearObjectStore, getAll, getValue, putValue} from './PromisedIndexedDb';
+import {clearObjectStore, deleteByKey, getAll, getValue, putValue} from './PromisedIndexedDb';
 
 /**
  * Enregistre les marées
@@ -45,7 +45,7 @@ export const setConfigValue = (key,value) => {
 export const getConfigValue = (key, defaultValue=null) => {
   return getDatabase()
     .then(db => getValue(db, 'prefs', key))
-    .then(result => {console.log({key:key,result:result,default:defaultValue,isPresent:result!==undefined,returned:result!==undefined ? result.value : defaultValue}); return result!==undefined ? result.value : defaultValue});
+    .then(result => result!==undefined ? result.value : defaultValue);
 }
 
 export function getTimeranges(activeOnly = false){
@@ -55,4 +55,24 @@ export function getTimeranges(activeOnly = false){
     return getDatabase()
       .then(db => getAll(db, 'range'))
   }
+}
+
+/**
+ * Ajoute ou modifie une tranche horaire en fonction de son id
+ * @param range
+ * @returns {Promise<unknown>}
+ */
+export function putRange(range){
+  return getDatabase()
+    .then(db => putValue(db, 'range', range));
+}
+
+/**
+ * Supprime une tranche horaire par son identifiant
+ * @param id
+ * @returns {Promise<unknown>}
+ */
+export function deleteRange(id){
+  return getDatabase()
+    .then(db => deleteByKey(db, 'range', id));
 }

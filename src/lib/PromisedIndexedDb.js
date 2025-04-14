@@ -128,5 +128,22 @@ export function getAll(Database, StoreName){
     requete.onsuccess = (event) => success(event.target.result);
     requete.onerror = fail;
   });
+}
 
+/**
+ * Supprime un objet du datastore par sa clé
+ * @param Database
+ * @param StoreName
+ * @param key
+ * @returns {Promise<unknown>}
+ */
+export function deleteByKey(Database, StoreName, key){
+  return new Promise((success, fail) => {
+    let requete = Database
+      .transaction([StoreName], 'readwrite')
+      .objectStore(StoreName)
+      .delete(key);
+    requete.onsuccess = (event) => success(event.target.result);
+    requete.onerror = fail;
+  });
 }

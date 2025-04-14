@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import dayjs from 'dayjs';
 import WeekDaySelector from './WeekDaySelector';
 
-export default function TimeRange({value, onChange, onDelete, cle}){
+export default function TimeRange({value, onChange, onDelete}){
   const defaults = getDefaultHours();
   const [active, setActive] = useState(true);
   const [from, setFrom] = useState(defaults[0]);
@@ -26,7 +26,7 @@ export default function TimeRange({value, onChange, onDelete, cle}){
   }, [value]);
 
   function changes(params){
-    onChange(Object.assign({},{active, from, to, weekDays, description}, params));
+    onChange(Object.assign({},{active, from, to, weekDays, description, id:value.id}, params));
   }
 
   function getDefaultHours(){
@@ -38,8 +38,8 @@ export default function TimeRange({value, onChange, onDelete, cle}){
     <div className="timerange">
       <div className="head">
         <div>
-          <input type="checkbox" checked={active} onChange={()=>changes({active: !active})} id={cle + '-act'}/>
-          <label htmlFor={cle + '-act'}>Notification activée</label>
+          <input type="checkbox" checked={active} onChange={()=>changes({active: !active})} id={value.id + '-act'}/>
+          <label htmlFor={value.id + '-act'}>Notification activée</label>
         </div>
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="icon" onClick={onDelete}>

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {getConfigValue, getTimeranges, setConfigValue} from '../lib/storage';
+import {deleteRange, getConfigValue, getTimeranges, putRange, setConfigValue} from '../lib/storage';
 import TimeRange from './TimeRange';
 
 export default function Preferences(){
@@ -33,21 +33,27 @@ export default function Preferences(){
   }
 
   function addTimeRange() {
-    setTimeRanges(current => [...current, {active: true}]);
+    putRange({active:true})
+      .then(createdId =>
+        setTimeRanges(current => [...current, {active: true, id:createdId}])
+      );
   }
 
-  function onChangeTimeRange(index, values) {
-    // TODO : modif en database
-    setTimeRanges(current => {
-      const n = [...current];
-      n[index] = values;
-      return n;
-    })
+  function onChangeTimeRange(id, values) {
+    setTimeRanges(current =>
+      current.map(t => {
+        if (t.id === id) {
+          t = values;
+          putRange(t);
+        }
+        return t;
+      })
+    );
   }
 
-  function onDeleteTimerange(index){
-    // TODO : delete timeRange in database => tr[index].id (si non nul)
-    setTimeRanges(current => current.filter((k, i)=> i !== index));
+  function onDeleteTimerange(id){
+    deleteRange(id);
+    setTimeRanges(current => current.filter(k => k.id !== id));
   }
 
   return (<>
@@ -60,12 +66,14 @@ export default function Preferences(){
       <label htmlFor="preventMe">minutes avant que le pont tourne dans l'une des plages horaires suivantes :</label>
     </p>
     <div hidden={!notifEnabled}>
-      <p style={{textAlign:'right'}}><button onClick={addTimeRange}>+ Ajouter une plage horaire</button></p>
+      <p style={{textAlign:'right'}}>
+        <button onClick={addTimeRange}>+ Ajouter une plage horaire</button>
+      </p>
       <div id="listeAlertes">
-        {timeRanges && timeRanges.length>0 && timeRanges.map((t, ind) =>
-          <TimeRange value={t} key={'tr' + ind} cle={'tr' + ind}
-                     onChange={ vals => onChangeTimeRange(ind, vals)}
-                     onDelete={()=>onDeleteTimerange(ind)}
+        {timeRanges && timeRanges.length>0 && timeRanges.map(t =>
+          <TimeRange value={t} key={t.id}
+                     onChange={ vals => onChangeTimeRange(t.id, vals)}
+                     onDelete={()=>onDeleteTimerange(t.id)}
           />
         )}
       </div>
