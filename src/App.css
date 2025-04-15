@@ -169,7 +169,7 @@ button{
 }
 a, a:visited, a:hover{
     font-weight: bold;
-    color: var(--bglight);
+    color: var(--titre);
 }
 .separateur{
     border-bottom: 2px solid var(--bglight);

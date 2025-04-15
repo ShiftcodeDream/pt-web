@@ -17,8 +17,12 @@ export default function About() {
     <p>Les informations données ici le sont à titre purement informatif. L'auteur de l'application ne peut être
        tenu pour responsable de la qualité des prédictions, ni des conséquences de l'utilisation de cette
        application. </p>
+    <h2>Légende des couleurs</h2>
+    <p>Lorsque qu'un horaire est <span className="horaireNext">souligné en vert</span>, il indique la prochaine
+    manoeuvre du pont.</p>
+    <p>Lorsque qu'un horaire est <span className="horaireActif">souligné en rose</span>, il indique qu'aux vues de
+       l'horaire souligné, le pont est probablement tourné actuellement.</p>
     <br/>
-    <p>Développé par Matthias Delamare</p>
-    <p><a href="http://mdelamare.free.fr">http://mdelamare.free.fr</a></p>
+    <p>Développé par Matthias Delamare <a href="http://mdelamare.free.fr">http://mdelamare.free.fr</a></p>
   </div>);
 }
