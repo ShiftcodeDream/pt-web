@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import {Tab, TabList, TabPanel, Tabs} from 'react-tabs';
 import dayjs from 'dayjs';
 
@@ -5,26 +6,27 @@ import './App.css';
 import Horaires from './components/Horaires';
 import About from './components/About';
 import Preferences from './components/Preferences';
-import {setConfigValue} from './lib/storage';
 
 require('dayjs/locale/fr');
 
 function App() {
   dayjs.locale('fr');
-  console.log("create worker");
-  const BasicWorker = new Worker(new URL("./workers/BasicWorker.js", import.meta.url), {type:'module'});
-  BasicWorker.onmessage = e => console.log(e.data);
+  const [refreshNeeded, setRefreshNeeded] = useState(1);
 
-  function sendMessage(force){
-    console.log("sending");
-    BasicWorker.postMessage({do:true, force});
+  const TidesWorker = new Worker(new URL("./workers/TidesWorker.js", import.meta.url), {type:'module'});
+  // When TidesWorker succeeded to download tides, ask Horaires component to refresh
+  TidesWorker.onmessage = e => {
+    if(e.data && e.data.success)
+      setRefreshNeeded(n=>n+1);
   }
 
+  useEffect(() => {
+    // On page load, force tides download
+    TidesWorker.postMessage({do:true, force:true});
+    setInterval(() => TidesWorker.postMessage({do:true, force:false}), 15*60*1000);
+  }, []);
+
   return (
-    <>
-      <button onClick={()=>sendMessage(false)}>Send Message</button>
-      <button onClick={()=>sendMessage(true)}>Force update</button>
-      <button onClick={()=>setConfigValue('lastFetch', dayjs().add(-6,'hour').toISOString())}>Outdate last update</button>
     <Tabs>
       <TabList>
         <Tab>Horaires</Tab>
@@ -32,11 +34,10 @@ function App() {
         <Tab>Préférences</Tab>
       </TabList>
 
-      <TabPanel><Horaires /></TabPanel>
+      <TabPanel><Horaires pleaseRefresh={refreshNeeded}/></TabPanel>
       <TabPanel><About /></TabPanel>
       <TabPanel><Preferences /></TabPanel>
     </Tabs>
-      </>
   );
 }
 

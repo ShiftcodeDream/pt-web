@@ -204,7 +204,7 @@ module.exports = function (webpackEnv) {
     entry: {
       main: paths.appIndexJs,
       // Workers builds. Workers requires other libs, so let webpack do the job
-      BasicWorker: path.join(paths.appSrc, 'workers/BasicWorker.js')
+      TidesWorker: path.join(paths.appPath, 'src/workers/TidesWorker.js')
     },
     output: {
       // The build folder.

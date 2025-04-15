@@ -4,13 +4,13 @@ import dayjs from 'dayjs';
 import DayTitle from './DayTitle';
 import DisplayHour from './DisplayHour';
 
-export default function Horaires(){
+export default function Horaires({pleaseRefresh}){
   const [tides, setTides] = useState([]);
   const [liste, setListe] = useState([]);
 
   useEffect(() => {
     getTides().then(setTides);
-  }, []);
+  }, [pleaseRefresh]);
 
   useEffect(makeList, [tides]);
   
