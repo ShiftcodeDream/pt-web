@@ -5,6 +5,7 @@ import './App.css';
 import Horaires from './components/Horaires';
 import About from './components/About';
 import Preferences from './components/Preferences';
+import {setConfigValue} from './lib/storage';
 
 require('dayjs/locale/fr');
 
@@ -12,15 +13,18 @@ function App() {
   dayjs.locale('fr');
   console.log("create worker");
   const BasicWorker = new Worker(new URL("./workers/BasicWorker.js", import.meta.url), {type:'module'});
-  BasicWorker.onmessage = e => console.log({appReception: e.data});
+  BasicWorker.onmessage = e => console.log(e.data);
 
-  function sendMessage(){
+  function sendMessage(force){
     console.log("sending");
-    BasicWorker.postMessage({do:true});
+    BasicWorker.postMessage({do:true, force});
   }
 
   return (
-    <><button onClick={sendMessage}>Send Message</button>
+    <>
+      <button onClick={()=>sendMessage(false)}>Send Message</button>
+      <button onClick={()=>sendMessage(true)}>Force update</button>
+      <button onClick={()=>setConfigValue('lastFetch', dayjs().add(-6,'hour').toISOString())}>Outdate last update</button>
     <Tabs>
       <TabList>
         <Tab>Horaires</Tab>
