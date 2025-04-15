@@ -200,7 +200,12 @@ module.exports = function (webpackEnv) {
       : isEnvDevelopment && 'cheap-module-source-map',
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
-    entry: paths.appIndexJs,
+    // entry: paths.appIndexJs,
+    entry: {
+      main: paths.appIndexJs,
+      // Workers builds. Workers requires other libs, so let webpack do the job
+      BasicWorker: path.join(paths.appSrc, 'workers/BasicWorker.js')
+    },
     output: {
       // The build folder.
       path: paths.appBuild,
@@ -210,7 +215,7 @@ module.exports = function (webpackEnv) {
       // In development, it does not produce real files.
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
-        : isEnvDevelopment && 'static/js/bundle.js',
+        : isEnvDevelopment && 'static/js/[name].[contenthash:8].bundle.js',
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].chunk.js'
