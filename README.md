@@ -10,6 +10,14 @@ Un service worker gère la mise en cache du code.
 Le TideWorker télécharge régulièrement les horaires des manœuvres
 Le NotificationWorker créée les notifications pour alerter l'utilisateur d'une manœuvre à venir.
 
+## A propos des workers
+Les workers utilisés ont besoin de code commun au projet et de bibliothèques inclues dans le dossier node_modules (dayjs notamment).
+A partir d'un projet `create-react-app`, il a fallu exécuter `npm run eject` afin de pouvoir modifier la configuration de webpack.
+Ainsi, le code de chaque worker (TidesWorker, NotificationsWorker) doit être construit comme un module à part entière, aves les bibliothèques et code requis.
+En conséquence, la configuration de webpack a été modifiée afin de construire le build principal du projet, plus deux
+builds complémentaires; un par worker. La partie "Entry" de webpack.config.js contient donc trois entrées au lieu d'une.
+Cette configuration des webpack nous oblige à "dupliquer" dans chaque module la bibliothèque dayjs.
+
 ## Développement
 ### Scripts
 `npm start`
