@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import {getConfigValue, setConfigValue, storeTides} from '../lib/storage';
+import {deleteTide, getConfigValue, getTides, setConfigValue, storeTides} from '../lib/storage';
 import {FETCH_DATA_HOURS_INTERVAL, LAST_FETCH_KEY} from '../config';
 import {downloadTides} from '../lib/tides';
 
@@ -40,6 +40,15 @@ onmessage = async e => {
           success = false;
         });
     }
+
+    // Ménage dans les anciens horaires
+    const limite = dayjs().add(-1, 'day');
+    getTides()
+      .then(tides => tides
+        .filter(tid => tid.t.isBefore(limite, 'day'))
+        .forEach(tide => deleteTide(tide))
+      )
+
     postMessage({ updated, success, last });
   }
 }

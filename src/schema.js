@@ -5,10 +5,9 @@ export const DATABASE_VERSION = 1;
 export function updateDatabaseSchema(e){
   const db = e.target.result;
   // Préférences cle/valeur
-  let store = db.createObjectStore('prefs', { keyPath: "key"});
-  store.createIndex("prefs_key", "key", {unique:true});
+  db.createObjectStore('prefs', { keyPath: "key"});
   // Horaires des manoeuvres
-  db.createObjectStore('tide', { keyPath: "id", autoIncrement : true});
+  db.createObjectStore('tide', { keyPath: "t" });
   // Plage de temps d'alerte (définies dans les préférences)
   db.createObjectStore('range', { keyPath: "id", autoIncrement : true});
 }

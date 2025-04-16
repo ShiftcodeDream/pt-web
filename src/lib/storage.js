@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import getDatabase from '../schema';
-import {clearObjectStore, deleteByKey, getAll, getValue, putValue} from './PromisedIndexedDb';
+import {deleteByKey, getAll, getValue, putValue} from './PromisedIndexedDb';
 
 /**
  * Enregistre les marées
@@ -9,12 +9,23 @@ import {clearObjectStore, deleteByKey, getAll, getValue, putValue} from './Promi
  */
 export function storeTides(tides) {
   return getDatabase()
-    .then(db => clearObjectStore(db, 'tide'))
-    .then(db => Promise.all(tides.map(t =>
-      putValue(db, 'tide', { t: t.toISOString() })
-    )));
+    .then(db => {
+      return Promise.all(tides.map(t =>
+        putValue(db, 'tide', { t: t.toISOString() })
+      ))
+    });
 }
 
+/**
+ * Supprime un horaire de marées
+ * @param tide
+ * @returns {Promise<*>}
+ */
+export function deleteTide(tide){
+  // console.log({todelete: tide, iso:tide.t})
+  return getDatabase()
+    .then(db => deleteByKey(db, 'tide', tide.t.toISOString() ));
+}
 /**
  * Retourne tous les horaires de manoeuvre potentiels enregistrés dans la database
  * sous la forme d'un tableau d'objets Dayjs
@@ -23,7 +34,7 @@ export function storeTides(tides) {
 export function getTides(){
   return getDatabase()
     .then(db => getAll(db, 'tide'))
-    .then(tides => tides.map(d => dayjs(d.t)));
+    .then(tides => tides.map(d => ({t: dayjs(d.t), notifSent:d.notifSent === true})));
 }
 
 /**

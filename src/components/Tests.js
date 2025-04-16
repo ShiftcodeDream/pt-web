@@ -43,7 +43,7 @@ export default function Tests(){
     mockupTides()
       .then(storeTides)
       .then(() => getTides())
-      .then(t => console.log({tides:t, format:t.map(y => y.format("DD/MM/YYYY HH:mm")) }))
+      .then(t => console.log({tides:t, format:t.map(y => y.t.format("DD/MM/YYYY HH:mm")) }))
     ;
 
     setResultat(result);

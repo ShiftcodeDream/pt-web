@@ -9,7 +9,7 @@ export default function Horaires({pleaseRefresh}){
   const [liste, setListe] = useState([]);
 
   useEffect(() => {
-    getTides().then(setTides);
+    getTides().then(rep => setTides(rep.map(t => t.t)));
   }, [pleaseRefresh]);
 
   useEffect(makeList, [tides]);
