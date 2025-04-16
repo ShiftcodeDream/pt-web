@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
 import {deleteRange, getConfigValue, getTimeranges, putRange, setConfigValue} from '../lib/storage';
 import TimeRange, {getDefaultValues} from './TimeRange';
+import {NOTIF_ENABLED_KEY, NOTIF_DELAY_KEY} from '../config';
+import {askNotificationAuthorization, isNotificationGranted} from '../lib/notif';
 
 export default function Preferences(){
-  const NOTIF_ENABLED_KEY = 'NotifEnabled';
-  const NOTIF_DELAY_KEY = 'DelaiNotif';
   const [notifEnabled, setNotifEnabled] = useState(true);
   const [notifDelay, setNotifDelay] = useState(10);
   const [timeRanges, setTimeRanges] = useState([]);
@@ -15,9 +15,15 @@ export default function Preferences(){
     getTimeranges().then(setTimeRanges);
   }, []);
 
-  function toggleEnabled(){
-    setConfigValue(NOTIF_ENABLED_KEY, !notifEnabled ? 'true' : 'false');
-    setNotifEnabled(!notifEnabled);
+  async function toggleEnabled(){
+    let newState = !notifEnabled;
+    // On demande l'autorisation d'envoyer des notifications
+    // Si l'autorisation est refusée, on décoche la case à cocher.
+    if(newState && !isNotificationGranted()){
+      await askNotificationAuthorization().then(resp => newState = resp);
+    }
+    setNotifEnabled(newState);
+    setConfigValue(NOTIF_ENABLED_KEY, newState ? 'true' : 'false');
   }
 
   function onChangeNotifDelay(event){

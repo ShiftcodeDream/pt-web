@@ -10,10 +10,16 @@
  * {running: false} si le traitement est stoppé ou pas encore démarré
  *
  */
+import {NOTIF_ENABLED_KEY} from '../config';
+import {isNotificationGranted} from '../lib/notif';
+import {getConfigValue} from '../lib/storage';
 
 let workerInterval = 0;
 const doTheJob = async () => {
-
+  if(await getConfigValue(NOTIF_ENABLED_KEY) === 'false' || !isNotificationGranted()){
+    stop();
+    return;
+  }
 }
 
 onmessage = e => {
@@ -21,10 +27,14 @@ onmessage = e => {
     workerInterval = setInterval(doTheJob, 60000);
   }
   if(e.data.stop && workerInterval !== 0){
-    clearInterval(workerInterval);
-    workerInterval = 0;
+    stop();
   }
   if(e.data.start || e.data.stop || e.data.status) {
     postMessage({ running: workerInterval !== 0 });
   }
+}
+
+function stop(){
+  clearInterval(workerInterval);
+  workerInterval = 0;
 }

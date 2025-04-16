@@ -14,20 +14,19 @@ function App() {
   const [refreshNeeded, setRefreshNeeded] = useState(1);
 
   const TidesWorker = new Worker(new URL("./workers/TidesWorker.js", import.meta.url), {type:'module'});
-  // When TidesWorker succeeded to download tides, ask Horaires component to refresh
-  TidesWorker.onmessage = e => {
-    if(e.data && e.data.success)
-      setRefreshNeeded(n=>n+1);
-  }
-
   const NotificationsWorker = new Worker(new URL("./workers/NotificationsWorker.js", import.meta.url), {type:'module'});
-  NotificationsWorker.onmessage = e => console.log(e.data);
 
   useEffect(() => {
-    // On page load, force tides download, then for for refresh every 15 minutes
+    // When TidesWorker succeeded to download tides, ask Horaires component to refresh
+    TidesWorker.onmessage = e => {
+      if(e.data && e.data.success)
+        setRefreshNeeded(n=>n+1);
+    }
+    // On page load, force tides download, then asks for refresh (if needed) every 15 minutes
     TidesWorker.postMessage({do:true, force:true});
     setInterval(() => TidesWorker.postMessage({do:true, force:false}), 15*60*1000);
     // Launches NotificationsWorker
+    NotificationsWorker.onmessage = e => console.log(e.data);
     NotificationsWorker.postMessage({start:true});
   }, []);
 
