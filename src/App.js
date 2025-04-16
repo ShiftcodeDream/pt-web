@@ -20,10 +20,15 @@ function App() {
       setRefreshNeeded(n=>n+1);
   }
 
+  const NotificationsWorker = new Worker(new URL("./workers/NotificationsWorker.js", import.meta.url), {type:'module'});
+  NotificationsWorker.onmessage = e => console.log(e.data);
+
   useEffect(() => {
-    // On page load, force tides download
+    // On page load, force tides download, then for for refresh every 15 minutes
     TidesWorker.postMessage({do:true, force:true});
     setInterval(() => TidesWorker.postMessage({do:true, force:false}), 15*60*1000);
+    // Launches NotificationsWorker
+    NotificationsWorker.postMessage({start:true});
   }, []);
 
   return (
