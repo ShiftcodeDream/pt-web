@@ -10,15 +10,44 @@
  * {running: false} si le traitement est stoppé ou pas encore démarré
  *
  */
-import {NOTIF_ENABLED_KEY} from '../config';
-import {isNotificationGranted} from '../lib/notif';
-import {getConfigValue} from '../lib/storage';
+import dayjs from 'dayjs';
+import {NOTIF_DELAY_KEY, NOTIF_ENABLED_KEY} from '../config';
+import {getConfigValue, getTides, getTimeranges, setTideNotified} from '../lib/storage';
+import {timeToDayjs} from '../lib/utils';
+
+require('dayjs/locale/fr');
+dayjs.locale('fr');
 
 let workerInterval = 0;
 const doTheJob = async () => {
-  if(await getConfigValue(NOTIF_ENABLED_KEY) === 'false' || !isNotificationGranted()){
+  if(await getConfigValue(NOTIF_ENABLED_KEY) === 'false'){
     stop();
     return;
+  }
+
+  // Recherche des horaires pour lesquels une notification doit être lancée
+  const delai = await getConfigValue(NOTIF_DELAY_KEY);
+  const now = dayjs();
+  const limite = now.add(delai, 'minute');
+
+  let tide = await getTides()
+    .then(tides => tides.find(tid => !tid.notifSent && tid.t.isAfter(now) && tid.t.isBefore(limite)));
+  // Pas d'horaire : stopper le traitement
+  if(!tide)
+    return;
+  // Est-ce que l'horaire trouvé fait partie des plages horaires définies par l'utilisateur?
+  const jourSemaine = (tide.t.day()+6) % 7;
+  const timeRanges = await getTimeranges(true);
+  let result = timeRanges.find(tr =>
+      tr.weekDays[jourSemaine]  // Le jour de la semaine de l'horaire correspond aux critères de la plage horaires
+      && timeToDayjs(tr.from).isBefore(tide.t) // et l'horaire de la manoeuvre est inclu dans la plage horaire concernée
+      && timeToDayjs(tr.to).isAfter(tide.t.add(1, 'minute'))
+  );
+  // Si au moins une plage horaire active correspond aux critères, alors on envoie une notification
+  if(result){
+    new Notification("Manoeuvre du pont tournant le " + tide.t.format('D MMMM'),
+      {body:"Le pont va tourner à " + tide.t.format("HH:mm") + " si un bateau se présente."} );
+    setTideNotified(tide);
   }
 }
 

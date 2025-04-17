@@ -26,7 +26,6 @@ function App() {
     TidesWorker.postMessage({do:true, force:true});
     setInterval(() => TidesWorker.postMessage({do:true, force:false}), 15*60*1000);
     // Launches NotificationsWorker
-    NotificationsWorker.onmessage = e => console.log(e.data);
     NotificationsWorker.postMessage({start:true});
   }, []);
 

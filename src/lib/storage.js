@@ -1,19 +1,26 @@
 import dayjs from 'dayjs';
 import getDatabase from '../schema';
-import {deleteByKey, getAll, getValue, putValue} from './PromisedIndexedDb';
+import {deleteByKey, getAll, getAllKeys, getValue, putValue} from './PromisedIndexedDb';
 
 /**
- * Enregistre les marées
+ * Enregistre les marées, sauf si elle est déjà présente pour ne pas modifier son statut "notifSent"
  * @param tides Tableau d'objets DayJs représentant les horaires des manoeuvres potentielles du pont
  * @returns {Promise<Awaited<unknown>[]>}
  */
 export function storeTides(tides) {
+  let db;
   return getDatabase()
-    .then(db => {
-      return Promise.all(tides.map(t =>
-        putValue(db, 'tide', { t: t.toISOString() })
-      ))
-    });
+    .then(d => db = d)
+    .then(() => getAllKeys(db, 'tide'))
+    .then(existingKeys => Promise.all(
+      tides
+        .map(t => t.toISOString())
+        .filter(t => ! existingKeys.includes(t))
+        .map(t => putValue(db, 'tide', {
+          t,
+          notifSent: false
+        }))
+    ));
 }
 
 /**
@@ -22,7 +29,6 @@ export function storeTides(tides) {
  * @returns {Promise<*>}
  */
 export function deleteTide(tide){
-  // console.log({todelete: tide, iso:tide.t})
   return getDatabase()
     .then(db => deleteByKey(db, 'tide', tide.t.toISOString() ));
 }
@@ -34,7 +40,10 @@ export function deleteTide(tide){
 export function getTides(){
   return getDatabase()
     .then(db => getAll(db, 'tide'))
-    .then(tides => tides.map(d => ({t: dayjs(d.t), notifSent:d.notifSent === true})));
+    .then(tides => tides.map(d => ({
+      t: dayjs(d.t),
+      notifSent: d.notifSent})
+    ));
 }
 
 /**
@@ -85,4 +94,20 @@ export function putRange(range){
 export function deleteRange(id){
   return getDatabase()
     .then(db => deleteByKey(db, 'range', id));
+}
+
+/**
+ * Permet d'indiquer qu'un horaire de manoeuvre a été fait
+ * l'objet d'une notification
+ *
+ * @param tide l'horaire de manoeuvre en question
+ * @returns {Promise<unknown>}
+ */
+export function setTideNotified(tide){
+  console.log({done:tide});
+  return getDatabase()
+    .then(db => putValue(db, 'tide', {
+      t: tide.t.toISOString(),
+      notifSent: true
+    }));
 }

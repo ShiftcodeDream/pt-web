@@ -147,3 +147,21 @@ export function deleteByKey(Database, StoreName, key){
     requete.onerror = fail;
   });
 }
+
+/**
+ * Renvoie toutes les clés des objets enregistrés dans un datastore
+ * @param Database
+ * @param StoreName
+ * @returns {Promise<unknown>}
+ */
+export function getAllKeys(Database, StoreName){
+  return new Promise((success, fail) => {
+    let requete = Database
+      .transaction([StoreName], 'readonly')
+      .objectStore(StoreName)
+      .getAllKeys();
+    requete.onsuccess = (event) => success(event.target.result);
+    requete.onerror = fail;
+  });
+}
+
