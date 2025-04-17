@@ -39,7 +39,7 @@ function App() {
 
       <TabPanel><Horaires pleaseRefresh={refreshNeeded}/></TabPanel>
       <TabPanel><About /></TabPanel>
-      <TabPanel><Preferences /></TabPanel>
+      <TabPanel><Preferences notifWorker={NotificationsWorker}/></TabPanel>
     </Tabs>
   );
 }

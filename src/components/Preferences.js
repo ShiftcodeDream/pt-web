@@ -4,7 +4,7 @@ import TimeRange, {getDefaultValues} from './TimeRange';
 import {NOTIF_ENABLED_KEY, NOTIF_DELAY_KEY} from '../config';
 import {askNotificationAuthorization, isNotificationGranted} from '../lib/notif';
 
-export default function Preferences(){
+export default function Preferences({notifWorker}){
   const [notifEnabled, setNotifEnabled] = useState(true);
   const [notifDelay, setNotifDelay] = useState(10);
   const [timeRanges, setTimeRanges] = useState([]);
@@ -23,6 +23,11 @@ export default function Preferences(){
       await askNotificationAuthorization().then(resp => newState = resp);
     }
     setNotifEnabled(newState);
+    // Démarre ou stoppe le notification worker en fonction de l'état de la préférence utilisateur
+    if(newState)
+      notifWorker.postMessage({start: true});
+    else
+      notifWorker.postMessage({stop: true});
     setConfigValue(NOTIF_ENABLED_KEY, newState ? 'true' : 'false');
   }
 

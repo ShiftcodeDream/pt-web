@@ -1,6 +1,7 @@
 {
   "short_name": "Pont Tournant",
   "name": "Pont Tournant de Cherbourg",
+  "description": "Vous prévient lorsque le pont tournant de Cherbourg s'apprête à tourner",
   "icons": [
     {
       "src": "favicon.ico",
