@@ -2,6 +2,10 @@
   "short_name": "Pont Tournant",
   "name": "Pont Tournant de Cherbourg",
   "description": "Vous prévient lorsque le pont tournant de Cherbourg s'apprête à tourner",
+  "start_url": "https://pont-tournant.infinityfreeapp.com/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
   "icons": [
     {
       "src": "favicon.ico",
@@ -23,9 +27,5 @@
       "type": "image/png",
       "sizes": "512x512"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }

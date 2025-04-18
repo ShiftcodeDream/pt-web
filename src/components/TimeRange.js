@@ -31,10 +31,10 @@ export default function TimeRange({value, onChange, onDelete}){
 
   return (
     <div className="timerange">
-      <div className="head">
+      <div className={active ? 'head_on' : 'head_off'}>
         <div>
           <input type="checkbox" checked={active} onChange={()=>changes({active: !active})} id={value.id + '-act'}/>
-          <label htmlFor={value.id + '-act'}>Notification activée</label>
+          <label htmlFor={value.id + '-act'}>Notification {active ? 'activée' : 'désactivée'}</label>
         </div>
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="icon" onClick={onDelete}>
@@ -44,9 +44,9 @@ export default function TimeRange({value, onChange, onDelete}){
       </div>
       <div>
         <label>Plage horaire : </label>
-        <input type="time" value={from} onChange={e=>changes({from: e.target.value})} step="300"/>
+        <input type="time" value={from} onChange={e=>changes({from: e.target.value})} step="300" className="timeSelector"/>
         <label> - </label>
-        <input type="time" value={to} onChange={e=>changes({to: e.target.value})} step="300"/>
+        <input type="time" value={to} onChange={e=>changes({to: e.target.value})} step="300" className="timeSelector"/>
       </div>
       <div><label>Jours de la semaine :</label></div>
         <WeekDaySelector values={weekDays} onChange={wd=>changes({weekDays: wd})} />

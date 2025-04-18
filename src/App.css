@@ -196,8 +196,16 @@ label{
     max-width: 600px;
     margin: 8px auto;
 }
-.timerange .head{
+.timerange .head_on{
     background: linear-gradient(180deg, var(--bgmid) 0%, var(--bgto) 100%);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0;
+}
+.timerange .head_off{
+    background: linear-gradient(180deg, #222 0%, #666 100%);
     width: 100%;
     display: flex;
     align-items: center;
@@ -254,4 +262,7 @@ input.description::placeholder {
 hr{
     border: 0;
     border-top: 1px solid var(--fg);
+}
+.timeSelector {
+    max-width: 6em;
 }
