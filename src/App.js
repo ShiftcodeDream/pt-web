@@ -27,6 +27,7 @@ function App() {
     setInterval(() => TidesWorker.postMessage({do:true, force:false}), 15*60*1000);
     // Launches NotificationsWorker
     NotificationsWorker.postMessage({start:true});
+    // eslint-disable-next-line
   }, []);
 
   return (

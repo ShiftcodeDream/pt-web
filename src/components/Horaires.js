@@ -44,8 +44,8 @@ export default function Horaires({pleaseRefresh}){
   return (
     <><h1>Horaires de fermeture du pont</h1>
     {liste!==null && liste.length
-      && liste
-      || "Pas d'horaire connu pour le moment"
+      ? liste
+      : "Pas d'horaire connu pour le moment"
     }
     </>
   );
