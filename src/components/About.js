@@ -3,9 +3,10 @@ import {APP_VERSION, ENV_NAME} from '../config';
 export default function About() {
   return (<div id="cont-apropos">
     <h2>Pont Tournant de Cherbourg</h2>
-    <p>Le pont tournant de Cherbourg est susceptible de touner
-      <b>une heure avant</b> et <b>une heure après</b> la pleine mer.
+    <p>Le pont tournant de Cherbourg est susceptible de tourner
+      <b> une heure avant</b> et <b>une heure après</b> la pleine mer.
        Le pont ne tournera que si un bâteau se présente pour entrer ou sortir du bassin du commerce. </p>
+    <p>Les horaires sont donnés à titre indicatif et susceptibles d'être décalés en fonction de l'avancement ou l'arrivée des navires.</p>
     <p>Pendant toute la durée de la manœuvre, la traversée du pont par les véhicules terrestres et les piétons est
        rendue impossible. Cette manœuvre ne dure en général pas plus de dix minutes. </p>
     <h2>A propos de l'application</h2>
@@ -14,9 +15,6 @@ export default function About() {
        renseignez ces horaires dans l'application. Vous recevrez une notification quelques minutes avant la manœuvre.
        Ce délai est paramétrable à votre guise : vous pouvez définir combien de temps avant que la manœuvre n'ait lieu
        vous souhaitez être prévenu. </p>
-    <p>Les informations données ici le sont à titre purement informatif. L'auteur de l'application ne peut être
-       tenu pour responsable de la qualité des prédictions, ni des conséquences de l'utilisation de cette
-       application. </p>
     <h2>Légende des couleurs</h2>
     <p>Lorsque qu'un horaire est <span className="horaireNext">souligné en vert</span>, il indique la prochaine
     manoeuvre du pont.</p>

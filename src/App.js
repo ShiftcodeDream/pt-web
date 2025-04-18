@@ -31,7 +31,7 @@ function App() {
   }, []);
 
   return (
-    <Tabs>
+    <Tabs focusTabOnClick={false}>
       <TabList>
         <Tab>Horaires</Tab>
         <Tab>A propos</Tab>
