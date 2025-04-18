@@ -20,7 +20,9 @@ export default function Preferences({notifWorker}){
     // On demande l'autorisation d'envoyer des notifications
     // Si l'autorisation est refusée, on décoche la case à cocher.
     if(newState && !isNotificationGranted()){
-      await askNotificationAuthorization().then(resp => newState = resp);
+      newState = await askNotificationAuthorization();
+      if(!newState)
+        alert("Votre appareil n'accepte pas les notifications");
     }
     setNotifEnabled(newState);
     // Démarre ou stoppe le notification worker en fonction de l'état de la préférence utilisateur
