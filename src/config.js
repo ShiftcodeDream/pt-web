@@ -1,4 +1,5 @@
 export const URL_MAREES = "http://localhost/PTWeb/marees.php";
+// export const URL_MAREES = "https://pont-tournant.infinityfreeapp.com/marees.php";
 // Clé de configuration du dernier chargement des marées
 export const LAST_FETCH_KEY = 'lastFetch';
 // Intervalle minimal en heures entre deux téléchargements des horaires de marée
