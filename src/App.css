@@ -246,3 +246,7 @@ input.description::placeholder {
     width: 20px;
     margin: 5px;
 }
+hr{
+    border: 0;
+    border-top: 1px solid var(--fg);
+}

@@ -1,5 +1,11 @@
-export const URL_MAREES = "http://localhost/PTWeb/marees.php";
-// export const URL_MAREES = "https://pont-tournant.infinityfreeapp.com/marees.php";
+import packageJson from '../package.json';
+// Version de l'application
+export const APP_VERSION = packageJson.version;
+// API de téléchargement des horaires de marées
+export const ENV_NAME = process.env.NODE_ENV;
+export const URL_MAREES = ENV_NAME === 'production'
+  ? "http://pont-tournant.infinityfreeapp.com/marees.php"
+  : "http://localhost/PTWeb/marees.php";
 // Clé de configuration du dernier chargement des marées
 export const LAST_FETCH_KEY = 'lastFetch';
 // Intervalle minimal en heures entre deux téléchargements des horaires de marée

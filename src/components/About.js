@@ -1,4 +1,4 @@
-
+import {APP_VERSION, ENV_NAME} from '../config';
 
 export default function About() {
   return (<div id="cont-apropos">
@@ -22,7 +22,7 @@ export default function About() {
     manoeuvre du pont.</p>
     <p>Lorsque qu'un horaire est <span className="horaireActif">souligné en rose</span>, il indique qu'aux vues de
        l'horaire souligné, le pont est probablement tourné actuellement.</p>
-    <br/>
-    <p>Développé par Matthias Delamare <a href="http://mdelamare.free.fr">http://mdelamare.free.fr</a></p>
+    <hr/>
+    <p style={{fontSize:14}}>Application Pont Tournant version {APP_VERSION} - {ENV_NAME} - Développé par Matthias Delamare <a href="http://mdelamare.free.fr">http://mdelamare.free.fr</a></p>
   </div>);
 }
