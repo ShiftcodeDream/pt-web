@@ -196,7 +196,7 @@ label{
     max-width: 600px;
     margin: 8px auto;
 }
-.timerange .head_on{
+.timerange .head{
     background: linear-gradient(180deg, var(--bgmid) 0%, var(--bgto) 100%);
     width: 100%;
     display: flex;
@@ -204,13 +204,14 @@ label{
     justify-content: space-between;
     padding-top: 0;
 }
-.timerange .head_off{
+.timerange.inactive{
+    background-color: #222;
+    border-color: #555;
+    color: #777;
+}
+.timerange.inactive .head{
     background: linear-gradient(180deg, #222 0%, #666 100%);
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 0;
+    color: #ccc;
 }
 .timerange div {
     padding-top: 10px;
@@ -226,6 +227,9 @@ label{
     color: var(--titre);
     font-size: 22px;
     cursor: pointer;
+}
+.inactive .jours-semaine {
+    color: #777;
 }
 .jours-semaine div {
     padding: 0 0.5em;
@@ -249,6 +253,10 @@ label{
     font-weight: normal;
     text-align: left;
     width: calc(100% - 10px);
+}
+.inactive .description{
+    background-color: #111;
+    color: #777;
 }
 input.description::placeholder {
     opacity: 0.5;

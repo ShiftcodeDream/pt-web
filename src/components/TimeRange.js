@@ -30,8 +30,8 @@ export default function TimeRange({value, onChange, onDelete}){
   }
 
   return (
-    <div className="timerange">
-      <div className={active ? 'head_on' : 'head_off'}>
+    <div className={"timerange" + (!active ? ' inactive' : '')}>
+      <div className="head">
         <div>
           <input type="checkbox" checked={active} onChange={()=>changes({active: !active})} id={value.id + '-act'}/>
           <label htmlFor={value.id + '-act'}>Notification {active ? 'activée' : 'désactivée'}</label>
